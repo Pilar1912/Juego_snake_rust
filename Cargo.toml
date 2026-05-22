@@ -1,0 +1,8 @@
+[package]
+name = "rust-snake"
+version = "0.1.0"
+authors = ["SLMT <sam123456777@gmail.com>"]
+
+[dependencies]
+piston_window = "0.123.0"
+rand = "0.8"
