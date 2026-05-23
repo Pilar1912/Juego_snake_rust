@@ -3,11 +3,11 @@ use std::collections::LinkedList;
 
 use piston_window::Context;
 use piston_window::G2d;
-use piston_window::types::Color;
 
-use drawing::draw_block;
+use drawing::draw_snake_segment;
 
-const SNAKE_COLOR: Color = [0.18, 0.80, 0.44, 1.0];
+//const SNAKE_COLOR: Color = [0.18, 0.80, 0.44, 1.0];
+//const SNAKE_COLOR: Color = [0.78, 0.64, 1.0, 1.0];
 
 #[derive(Clone, Copy, PartialEq)]
 pub enum Direction {
@@ -61,8 +61,11 @@ impl Snake {
     }
 
     pub fn draw(&self, con: &Context, g: &mut G2d) {
+        let mut is_first = true;
         for block in &self.body {
-            draw_block(SNAKE_COLOR, block.x, block.y, con, g);
+            let is_head = is_first;
+            draw_snake_segment(block.x, block.y, is_head, con, g);
+            is_first = false;
         }
     }
 
@@ -105,6 +108,10 @@ impl Snake {
         (head_block.x, head_block.y)
     }
 
+    pub fn tail_position(&self) -> Option<(i32, i32)> {
+        self.body.back().map(|block| (block.x, block.y))
+    }
+
     pub fn head_direction(&self) -> Direction {
         self.moving_direction
     }
@@ -145,6 +152,21 @@ impl Snake {
             checked += 1;
             if checked == self.body.len() - 1 {
                 break;
+            }
+        }
+        return false;
+    }
+
+    pub fn grow_by(&mut self, amount: usize) {
+        for _ in 0..amount {
+            self.restore_last_removed();
+        }
+    }
+
+    pub fn is_touching_point(&self, x: i32, y: i32) -> bool {
+        for block in &self.body {
+            if x == block.x && y == block.y {
+                return true;
             }
         }
         return false;

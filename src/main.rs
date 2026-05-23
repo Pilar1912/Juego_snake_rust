@@ -11,17 +11,20 @@ use piston_window::types::Color;
 use game::Game;
 use drawing::to_gui_coord_u32;
 
-const BACK_COLOR: Color = [0.204, 0.286, 0.369, 1.0];
+//const BACK_COLOR: Color = [0.204, 0.286, 0.369, 1.0];
+//const BACK_COLOR: Color = [0.6, 0.8, 1.0, 1.0];
+const BACK_COLOR: Color = [0.8, 0.95, 1.0, 1.0];
 
 fn main() {
-    let (width, height) = (20, 20);
+    //let (width, height) = (20, 20);
+    let (width, height) = (30, 30);
 
     // Prepare window settings
     let mut window_settings = WindowSettings::new("Rust Snake",
     [to_gui_coord_u32(width), to_gui_coord_u32(height)]).exit_on_esc(true);
 
     // Fix vsync extension error for linux
-    window_settings.set_vsync(true); 
+    window_settings.set_vsync(false); 
 
     // Create a window
     let mut window: PistonWindow = window_settings.build().unwrap();
